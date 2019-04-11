@@ -41,7 +41,7 @@ class CRingBuffer {
 		//Deletes the first element in the buffer
 		void deleteFirst();
 		//Returns the state of the buffer
-		bool isEmpty();
+		bool isEmpty() const;
 
 	private:
 		int _start, _end;
@@ -103,7 +103,7 @@ void CRingBuffer<TElem>::deleteFirst() {
 }
 
 template <class TElem>
-bool CRingBuffer<TElem>::isEmpty() {
+bool CRingBuffer<TElem>::isEmpty() const {
 	return _length == 0;
 }
 

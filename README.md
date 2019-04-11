@@ -7,3 +7,8 @@ First of all you should define the desired size in RingBuffer.h
 //Tweak this to your desired capacity
 #define MAXLENGTH 10
 ```
+
+## Running tests
+```bash
+platformio test
+```

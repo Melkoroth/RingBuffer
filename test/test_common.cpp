@@ -10,15 +10,25 @@ void test_empty_isEmpty() {
 	TEST_ASSERT_TRUE(buff.isEmpty());
 }
 
-void test_simple_add_retrieve(void) {
+void test_not_empty_is_not_isEmpty() {
 	CRingBuffer<int> buff;
 	buff.addLast(1);
+	TEST_ASSERT_FALSE(buff.isEmpty());
+}
+
+void test_simple_add_retrieve() {
+	CRingBuffer<int> buff;
+	buff.addLast(1);
+	int someNum = buff.first();
+	TEST_ASSERT_EQUAL_INT(1, buff.first());
 }
 
 void process() {
     UNITY_BEGIN();
     RUN_TEST(test_one_is_one);
     RUN_TEST(test_empty_isEmpty);
+    RUN_TEST(test_not_empty_is_not_isEmpty);
+    RUN_TEST(test_simple_add_retrieve);
     UNITY_END();
 }
 
