@@ -42,6 +42,11 @@ class CRingBuffer {
 		void deleteFirst();
 		//Returns the state of the buffer
 		bool isEmpty() const;
+		bool isFull() const;
+		//Return the number of elements in buffer
+		int length() const;
+		//Returns max number of elements
+		int maxLength() const;
 
 	private:
 		int _start, _end;
@@ -82,16 +87,20 @@ void CRingBuffer<TElem>::copy(const CRingBuffer<TElem>& other) {
 template <class TElem>
 void CRingBuffer<TElem>::addLast(const TElem& elem) {
 	_end = (_end + 1) % MAXLENGTH;
-	_length++;
 	_buff[_end] = elem;
+
+	if (!isFull())
+		_length++;
+	else 
+		_start = (_start + 1) % MAXLENGTH;
 }
 
 template <class TElem>
 const TElem& CRingBuffer<TElem>::first() const {
-	if (!isEmpty())
+	//if (!isEmpty())
 		return _buff[_start];
-	else
-		return 0;
+	//else
+		//return 0;
 }
 
 template <class TElem>
@@ -105,6 +114,21 @@ void CRingBuffer<TElem>::deleteFirst() {
 template <class TElem>
 bool CRingBuffer<TElem>::isEmpty() const {
 	return _length == 0;
+}
+
+template <class TElem>
+bool CRingBuffer<TElem>::isFull() const {
+	return _length == MAXLENGTH;
+}
+
+template <class TElem>
+int CRingBuffer<TElem>::length() const {
+	return _length;
+}
+
+template <class TElem>
+int CRingBuffer<TElem>::maxLength() const {
+	return MAXLENGTH;
 }
 
 #endif
