@@ -93,6 +93,82 @@ void test_full_buffer_various_times() {
 	TEST_ASSERT_EQUAL_INT(2, buff.first());
 }
 
+void test_copy_constructor() {
+	CRingBuffer<int> buff;
+	for (int i = 0; i < buff.maxLength(); i++) {
+		buff.addLast(i);
+	}
+	CRingBuffer<int> buff2(buff);
+	while (!buff.isEmpty()) {
+		buff.deleteFirst();
+	}
+	TEST_ASSERT_FALSE(buff2.isEmpty());
+	TEST_ASSERT_TRUE(buff2.isFull());
+	TEST_ASSERT_EQUAL_INT(buff2.maxLength(), buff2.length());
+	for (int i = 0; i < buff2.maxLength(); i++) {
+		TEST_ASSERT_EQUAL_INT(i, buff2.first());
+		buff2.deleteFirst();
+		TEST_ASSERT_EQUAL_INT(buff2.maxLength() - i - 1, buff2.length());
+	}
+}
+
+void test_copy_constructor_plus_items() {
+	CRingBuffer<int> buff;
+	while (!buff.isFull()) {
+		buff.addLast(1);
+	}
+	buff.addLast(555);
+	CRingBuffer<int> buff2(buff);
+	TEST_ASSERT_TRUE(buff2.isFull());
+	TEST_ASSERT_EQUAL_INT(buff2.maxLength(), buff2.length());
+	while (!(buff2.length() == 1)) {
+		TEST_ASSERT_EQUAL_INT(1, buff2.first());
+		buff2.deleteFirst();
+		TEST_ASSERT_FALSE(buff2.isEmpty());
+	}
+	TEST_ASSERT_EQUAL_INT(1, buff2.length());
+	TEST_ASSERT_EQUAL_INT(555, buff2.first());
+}
+
+void test_equal_operator() {
+	CRingBuffer<int> buff;
+	for (int i = 0; i < buff.maxLength(); i++) {
+		buff.addLast(i);
+	}
+	CRingBuffer<int> buff2;
+	buff2 = buff;
+	while (!buff.isEmpty()) {
+		buff.deleteFirst();
+	}
+	TEST_ASSERT_FALSE(buff2.isEmpty());
+	TEST_ASSERT_TRUE(buff2.isFull());
+	TEST_ASSERT_EQUAL_INT(buff2.maxLength(), buff2.length());
+	for (int i = 0; i < buff2.maxLength(); i++) {
+		TEST_ASSERT_EQUAL_INT(i, buff2.first());
+		buff2.deleteFirst();
+		TEST_ASSERT_EQUAL_INT(buff2.maxLength() - i - 1, buff2.length());
+	}
+}
+
+void test_equal_operator_plus_items() {
+	CRingBuffer<int> buff;
+	while (!buff.isFull()) {
+		buff.addLast(1);
+	}
+	buff.addLast(555);
+	CRingBuffer<int> buff2;
+	buff2 = buff;
+	TEST_ASSERT_TRUE(buff2.isFull());
+	TEST_ASSERT_EQUAL_INT(buff2.maxLength(), buff2.length());
+	while (!(buff2.length() == 1)) {
+		TEST_ASSERT_EQUAL_INT(1, buff2.first());
+		buff2.deleteFirst();
+		TEST_ASSERT_FALSE(buff2.isEmpty());
+	}
+	TEST_ASSERT_EQUAL_INT(1, buff2.length());
+	TEST_ASSERT_EQUAL_INT(555, buff2.first());
+}
+
 /*
 void test_empty_first_returns_zero() {
 	CRingBuffer<int> buff;
@@ -118,6 +194,10 @@ void process() {
     RUN_TEST(test_full_buffer_items_and_length);
     RUN_TEST(test_full_buffer_plus_items_and_length);
     RUN_TEST(test_full_buffer_various_times);
+    RUN_TEST(test_copy_constructor);
+    RUN_TEST(test_equal_operator);
+    RUN_TEST(test_copy_constructor_plus_items);
+    RUN_TEST(test_equal_operator_plus_items);
     //RUN_TEST(test_empty_first_returns_zero);
     UNITY_END();
 }
