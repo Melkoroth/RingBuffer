@@ -1,7 +1,5 @@
 #include <unity.h>
 #include <RingBuffer.h>
-//TODO: Remove
-#include <iostream>
 
 void test_maxLength() {
 	CRingBuffer<int> buff;
